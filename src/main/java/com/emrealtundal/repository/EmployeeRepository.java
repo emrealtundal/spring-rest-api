@@ -1,6 +1,7 @@
 package com.emrealtundal.repository;
 
 import com.emrealtundal.model.Employee;
+import com.emrealtundal.model.UpdateEmployeeRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -79,5 +80,32 @@ public class EmployeeRepository {
             }
         }
         return false;
+    }
+
+    public Employee findEmployeeById(String id){
+        Employee findEmployee = null;
+        for(Employee employee : employeeList){
+            if(employee.getId().equals(id)){
+                findEmployee = employee;
+            }
+        }
+        return findEmployee;
+    }
+
+    public Employee updateEmployee(String id, UpdateEmployeeRequest request){
+        Employee findEmployee = findEmployeeById(id);
+        if(findEmployee != null){
+            deleteEmployee(id);
+
+            Employee updatedEmployee = new Employee();
+            updatedEmployee.setId(id);
+            updatedEmployee.setFirstName(request.getFirstName());
+            updatedEmployee.setLastName(request.getLastName());
+
+            employeeList.add(updatedEmployee);
+
+            return updatedEmployee;
+        }
+        return null;
     }
 }
